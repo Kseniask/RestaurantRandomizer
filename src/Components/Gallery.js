@@ -10,7 +10,7 @@ const Gallery = ({ id }) => {
 
   const getImages = async id => {
     const images = await (
-      await fetch(`http://localhost:3001/images/${id}`)
+      await fetch(`https://whats-for-lunch-backend.herokuapp.com/images/${id}`)
     ).json()
     const imageElements = []
     images.forEach((image, index) =>

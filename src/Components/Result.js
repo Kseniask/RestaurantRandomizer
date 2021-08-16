@@ -41,7 +41,7 @@ const Result = () => {
     let response
     navigator.geolocation.getCurrentPosition(async position => {
       response = await fetch(
-        `http://localhost:3001/restaurants/${position.coords.longitude}/${position.coords.latitude}`
+        `https://whats-for-lunch-backend.herokuapp.com/restaurants/${position.coords.longitude}/${position.coords.latitude}`
       )
       const jsonResponse = await response.json()
       const list = jsonResponse.businesses
