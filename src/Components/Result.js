@@ -23,7 +23,7 @@ const Result = () => {
 
   useEffect(() => {
     setIsLoaded(false)
-    getRestaurants()
+    getRestaurantList()
   }, [])
 
   useEffect(() => {
@@ -32,22 +32,29 @@ const Result = () => {
 
   useEffect(() => {
     if (restaurant !== undefined) {
-      console.log(restaurant)
       setIsLoaded(true)
     }
   }, [restaurant])
 
-  const getRestaurants = async () => {
-    let response
-    navigator.geolocation.getCurrentPosition(async position => {
-      response = await fetch(
-        `https://whats-for-lunch-backend.herokuapp.com/restaurants/${position.coords.longitude}/${position.coords.latitude}`
-      )
-      const jsonResponse = await response.json()
-      const list = jsonResponse.businesses
-      console.log(jsonResponse)
-      setRestaurantList(list)
-    })
+  const getRestaurantResponse = async position => {
+    const longitude = position ? position.coords.longitude : -123.118315
+    const latitude = position ? position.coords.latitude : 49.287663
+    const response = await fetch(
+      `https://whats-for-lunch-backend.herokuapp.com/restaurants/${longitude}/${latitude}`
+    )
+    const jsonResponse = await response.json()
+    const list = jsonResponse.businesses
+    setRestaurantList(list)
+  }
+  const getRestaurantList = async () => {
+    navigator.geolocation.getCurrentPosition(
+      async position => {
+        await getRestaurantResponse(position)
+      },
+      async () => {
+        await getRestaurantResponse()
+      }
+    )
   }
 
   const generateRandomRestaurant = async () => {
@@ -58,7 +65,6 @@ const Result = () => {
       randomPlace = restaurantList[randomIndex]
       isBanned = bannedCategories.includes(randomPlace.categories[0].alias)
     }
-    console.log(randomPlace)
     setRestaurant(randomPlace)
   }
 
@@ -77,7 +83,7 @@ const Result = () => {
             fullIcon={<i className='fa fa-star'></i>}
             activeColor='#ffd700'
             value={restaurant.rating}
-            size='25'
+            size={25}
           ></Rating>
           <Gallery id={restaurant.id}></Gallery>
           <h5>

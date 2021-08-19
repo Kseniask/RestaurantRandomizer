@@ -15,13 +15,8 @@ const Gallery = ({ id }) => {
     const imageElements = []
     images.forEach((image, index) =>
       imageElements.push(
-        <Col xs lg='3'>
-          <Image
-            src={image}
-            alt='restaurant'
-            className='imageResult'
-            key={index}
-          ></Image>
+        <Col xs lg='3' key={index}>
+          <Image src={image} alt='restaurant' className='imageResult'></Image>
         </Col>
       )
     )
