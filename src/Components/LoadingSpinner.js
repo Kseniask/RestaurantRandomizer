@@ -4,8 +4,8 @@ import { Container } from 'react-bootstrap'
 const LoadingSpinner = () => {
   return (
     <Container>
-      <div>
-        <img src={burgerImage} className='spinner' alt='burgerImage' />
+      <div className='spinner'>
+        <img src={burgerImage} alt='burgerImage' />
       </div>
     </Container>
   )

@@ -1,17 +1,16 @@
 * {
   font-family: "Optima";
 }
-.spinner {
-  display: block;
+.spinner img {
   animation: loading 3s infinite linear;
   margin: auto;
   width: 100px;
-  margin-top: 45%;
-}
-.try {
-  height: 900px;
+  margin-top: 10%;
 }
 
+.container {
+  height: 100vh;
+}
 .imageResult {
   position: relative;
   width: 100%;
@@ -28,15 +27,13 @@ h2 > span {
   color: grey;
   font-size: 25px;
 }
-
-.startButton {
-  display: flex;
-  justify-content: center;
-  padding-top: 20px;
-}
-
-.startPage {
-  margin-top: 35%;
+.intro,
+.startButton,
+.spinner {
+  position: relative;
+  top: 30%;
+  text-align: center;
+  width: 100%;
 }
 
 [class^="react-stars-wrapper"] {
