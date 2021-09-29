@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import LoadingSpinner from './LoadingSpinner'
-import { Container } from 'react-bootstrap'
+import { Container, Button } from 'react-bootstrap'
 import Gallery from './Gallery'
 import Rating from 'react-rating-stars-component'
+import { ButtonContext } from '../App'
 
 const Result = () => {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -89,6 +90,15 @@ const Result = () => {
           <h5>
             More info <a href={restaurant.url}>HERE</a>
           </h5>
+          <ButtonContext.Consumer>
+            {setIsClicked => (
+              <div className='startButton'>
+                <Button variant='info' onClick={() => setIsClicked(false)}>
+                  Back
+                </Button>
+              </div>
+            )}
+          </ButtonContext.Consumer>
         </Container>
       ) : (
         <LoadingSpinner></LoadingSpinner>

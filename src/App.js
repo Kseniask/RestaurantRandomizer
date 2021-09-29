@@ -13,7 +13,9 @@ function App () {
   return (
     <Container>
       {isClicked ? (
-        <Result></Result>
+        <ButtonContext.Provider value={setIsClicked}>
+          <Result></Result>
+        </ButtonContext.Provider>
       ) : (
         <ButtonContext.Provider value={setIsClicked}>
           <StartButton></StartButton>{' '}
