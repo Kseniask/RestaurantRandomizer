@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import LoadingSpinner from './LoadingSpinner'
 import { Container, Button } from 'react-bootstrap'
 import Gallery from './Gallery'
 import Rating from 'react-rating-stars-component'
-import { ButtonContext } from '../App'
+import ButtonContext from '../ButtonContext'
 
 const Result = () => {
   const [isLoaded, setIsLoaded] = useState(false)
   const [restaurant, setRestaurant] = useState()
   const [restaurantList, setRestaurantList] = useState([])
-
+  const { setIsIndividualClicked } = useContext(ButtonContext)
   const bannedCategories = [
     'icecream',
     'hotdogs',
@@ -90,15 +90,14 @@ const Result = () => {
           <h5>
             More info <a href={restaurant.url}>HERE</a>
           </h5>
-          <ButtonContext.Consumer>
-            {setIsClicked => (
-              <div className='startButton'>
-                <Button variant='info' onClick={() => setIsClicked(false)}>
-                  Back
-                </Button>
-              </div>
-            )}
-          </ButtonContext.Consumer>
+          <div className='startButton'>
+            <Button
+              variant='info'
+              onClick={() => setIsIndividualClicked(false)}
+            >
+              Back
+            </Button>
+          </div>
         </Container>
       ) : (
         <LoadingSpinner></LoadingSpinner>

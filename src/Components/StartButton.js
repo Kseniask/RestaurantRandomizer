@@ -1,23 +1,23 @@
-import { Container, Button } from 'react-bootstrap'
-import { ButtonContext } from '../App'
-const StartButton = () => {
+import { Button } from 'react-bootstrap'
+import { useContext } from 'react'
+import ButtonContext from '../ButtonContext'
+
+const StartButton = ({ isGroup, name }) => {
+  const { setIsIndividualClicked, setIsGroupClicked } = useContext(
+    ButtonContext
+  )
+
   return (
-    <Container className='startPage'>
-      <h2 className='intro'>
-        Ready for lunch?
-        <br />
-        Let's try something new today!
-      </h2>
-      <ButtonContext.Consumer>
-        {setIsClicked => (
-          <div className='startButton'>
-            <Button variant='info' onClick={() => setIsClicked(true)}>
-              Find a place
-            </Button>
-          </div>
-        )}
-      </ButtonContext.Consumer>
-    </Container>
+    <div className='startButton'>
+      <Button
+        variant='info'
+        onClick={() =>
+          isGroup ? setIsGroupClicked(true) : setIsIndividualClicked(true)
+        }
+      >
+        {name}
+      </Button>
+    </div>
   )
 }
 

@@ -1,5 +1,5 @@
 * {
-  font-family: "Optima";
+  font-family: 'Optima';
 }
 .spinner img {
   animation: loading 3s infinite linear;
@@ -29,14 +29,16 @@ h2 > span {
 }
 .intro,
 .startButton,
-.spinner {
+.spinner,
+.startPage {
   position: relative;
   top: 30%;
   text-align: center;
   width: 100%;
+  line-height: 40px;
 }
 
-[class^="react-stars-wrapper"] {
+[class^='react-stars-wrapper'] {
   display: flex;
   justify-content: center;
   padding-bottom: 15px;
