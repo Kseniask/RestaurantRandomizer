@@ -14,7 +14,9 @@ const JoinGroup = () => {
   const [groupRestaurant, setGroupRestaurant] = useState('')
   async function joinGroupLunch () {
     setIsLoading(true)
-    await SocketService.connect('http://localhost:3005')
+    await SocketService.connect(
+      'https://whats-for-lunch-backend.herokuapp.com/'
+    )
     const restaurantInGroup = await SocketService.joinRoom(groupName)
     if (restaurantInGroup) {
       setGroupRestaurant(restaurantInGroup)
