@@ -5,77 +5,55 @@ import Gallery from './Gallery'
 import Rating from 'react-rating-stars-component'
 import ButtonContext from '../ButtonContext'
 
-const Result = () => {
+export const getRandomRestaurantResponse = async () => {
+  const position = navigator.geolocation.getCurrentPosition(
+    position => position,
+    () => undefined
+  )
+  const longitude = position ? position.coords.longitude : -123.118315
+  const latitude = position ? position.coords.latitude : 49.287663
+  const restaurantSelection = await fetch(
+    `http://localhost:3005/random-restaurant/${longitude}/${latitude}`
+  )
+  return restaurantSelection.json()
+}
+
+const Result = ({ restaurant }) => {
   const [isLoaded, setIsLoaded] = useState(false)
-  const [restaurant, setRestaurant] = useState()
-  const [restaurantList, setRestaurantList] = useState([])
-  const { setIsIndividualClicked } = useContext(ButtonContext)
-  const bannedCategories = [
-    'icecream',
-    'hotdogs',
-    'cafes',
-    'fondue',
-    'fastfood',
-    'coffee',
-    'tobaccoshops',
-    'convenience',
-    'grocery'
-  ]
+  const [restaurantSelection, setRestaurant] = useState()
+  const {
+    setIsIndividualClicked,
+    setIsGroupClicked,
+    setIsGroupSelectionReady
+  } = useContext(ButtonContext)
 
   useEffect(() => {
     setIsLoaded(false)
-    getRestaurantList()
+    async function setRestaurantAsync () {
+      const randomPlace = await getRandomRestaurantResponse()
+      setRestaurant(randomPlace)
+    }
+    if (restaurant) {
+      setRestaurant(restaurant)
+      setIsLoaded(true)
+    } else {
+      setRestaurantAsync()
+    }
   }, [])
 
   useEffect(() => {
-    if (restaurantList.length > 0) generateRandomRestaurant()
-  }, [restaurantList])
-
-  useEffect(() => {
-    if (restaurant !== undefined) {
+    if (restaurantSelection !== undefined) {
       setIsLoaded(true)
     }
-  }, [restaurant])
-
-  const getRestaurantResponse = async position => {
-    const longitude = position ? position.coords.longitude : -123.118315
-    const latitude = position ? position.coords.latitude : 49.287663
-    const response = await fetch(
-      `https://whats-for-lunch-backend.herokuapp.com/restaurants/${longitude}/${latitude}`
-    )
-    const jsonResponse = await response.json()
-    const list = jsonResponse.businesses
-    setRestaurantList(list)
-  }
-  const getRestaurantList = async () => {
-    navigator.geolocation.getCurrentPosition(
-      async position => {
-        await getRestaurantResponse(position)
-      },
-      async () => {
-        await getRestaurantResponse()
-      }
-    )
-  }
-
-  const generateRandomRestaurant = async () => {
-    let randomIndex, randomPlace
-    let isBanned = true
-    while (isBanned) {
-      randomIndex = Math.floor(Math.random() * restaurantList.length)
-      randomPlace = restaurantList[randomIndex]
-      isBanned = bannedCategories.includes(randomPlace.categories[0].alias)
-    }
-    setRestaurant(randomPlace)
-  }
+  }, [restaurantSelection])
 
   return (
     <Container>
-      {isLoaded ? (
+      {isLoaded && restaurantSelection ? (
         <Container>
           <h2>
-            {restaurant.name}
-            <span>&nbsp;({restaurant.price})</span>
+            {restaurantSelection.name}
+            <span>&nbsp;({restaurantSelection.price})</span>
           </h2>
           <Rating
             count={5}
@@ -83,17 +61,21 @@ const Result = () => {
             emptyIcon={<i className='far fa-star'></i>}
             fullIcon={<i className='fa fa-star'></i>}
             activeColor='#ffd700'
-            value={restaurant.rating}
+            value={restaurantSelection.rating}
             size={25}
           ></Rating>
-          <Gallery id={restaurant.id}></Gallery>
+          <Gallery id={restaurantSelection.id}></Gallery>
           <h5>
-            More info <a href={restaurant.url}>HERE</a>
+            More info <a href={restaurantSelection.url}>HERE</a>
           </h5>
           <div className='startButton'>
             <Button
               variant='info'
-              onClick={() => setIsIndividualClicked(false)}
+              onClick={() => {
+                setIsIndividualClicked(false)
+                setIsGroupClicked()
+                setIsGroupSelectionReady()
+              }}
             >
               Back
             </Button>

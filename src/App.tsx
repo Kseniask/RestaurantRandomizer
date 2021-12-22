@@ -1,36 +1,45 @@
 import './App.css'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import StartButton from './Components/StartButton'
 import Result from './Components/Result'
+import JoinGroup from './Components/JoinGroup'
+
 import { Container } from 'react-bootstrap'
-import socketService from './Services/SocketService'
 import ButtonContext, { IButonContextProps } from './ButtonContext'
 
 function App () {
   const [isIndividualClicked, setIsIndividualClicked] = useState(false)
   const [isGroupClicked, setIsGroupClicked] = useState(false)
-
-  const connectSocket = async () => {
-    await socketService.connect('http://localhost:3005')
-  }
-
-  useEffect(() => {
-    connectSocket()
-  }, [])
-
+  const [isGroupSelectionReady, setIsGroupSelectionReady] = useState(false)
   const contextValue: IButonContextProps = {
     isIndividualClicked,
     setIsIndividualClicked,
     isGroupClicked,
-    setIsGroupClicked
+    setIsGroupClicked,
+    isGroupSelectionReady,
+    setIsGroupSelectionReady
+  }
+
+  function showClickedResult () {
+    if (isIndividualClicked) {
+      return (
+        <ButtonContext.Provider value={contextValue}>
+          <Result restaurant={null}></Result>
+        </ButtonContext.Provider>
+      )
+    } else if (isGroupClicked) {
+      return (
+        <ButtonContext.Provider value={contextValue}>
+          <JoinGroup />
+        </ButtonContext.Provider>
+      )
+    }
   }
 
   return (
     <Container>
-      {isIndividualClicked ? (
-        <ButtonContext.Provider value={contextValue}>
-          <Result></Result>
-        </ButtonContext.Provider>
+      {isIndividualClicked || isGroupClicked ? (
+        showClickedResult()
       ) : (
         <div className='startPage'>
           <h2 className='intro'>

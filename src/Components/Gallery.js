@@ -5,7 +5,10 @@ const Gallery = ({ id }) => {
   const [images, setImages] = useState([])
 
   useEffect(() => {
-    getImages(id)
+    async function getImagesAsync () {
+      await getImages(id)
+    }
+    getImagesAsync()
   }, [])
 
   const getImages = async id => {

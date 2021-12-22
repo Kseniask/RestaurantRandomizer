@@ -30,7 +30,8 @@ h2 > span {
 .intro,
 .startButton,
 .spinner,
-.startPage {
+.startPage,
+.inputPage {
   position: relative;
   top: 30%;
   text-align: center;
