@@ -6,16 +6,22 @@ import Rating from 'react-rating-stars-component'
 import ButtonContext from '../ButtonContext'
 
 export const getRandomRestaurantResponse = async () => {
-  const position = navigator.geolocation.getCurrentPosition(
-    position => position,
-    () => undefined
-  )
+  let position = await getLocation()
   const longitude = position ? position.coords.longitude : -123.118315
   const latitude = position ? position.coords.latitude : 49.287663
   const restaurantSelection = await fetch(
     `http://localhost:3005/random-restaurant/${longitude}/${latitude}`
   )
   return restaurantSelection.json()
+}
+
+function getLocation () {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      response => resolve(response),
+      response => resolve(null)
+    )
+  })
 }
 
 const Result = ({ restaurant }) => {
