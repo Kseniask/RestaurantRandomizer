@@ -10,7 +10,7 @@ export const getRandomRestaurantResponse = async () => {
   const longitude = position ? position.coords.longitude : -123.118315
   const latitude = position ? position.coords.latitude : 49.287663
   const restaurantSelection = await fetch(
-    `http://localhost:3005/random-restaurant/${longitude}/${latitude}`
+    `https://whats-for-lunch-backend.herokuapp.com/random-restaurant/${longitude}/${latitude}`
   )
   return restaurantSelection.json()
 }
